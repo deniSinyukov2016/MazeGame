@@ -82,6 +82,12 @@ public class Heroy {
 
     public void tick(){
         handleInput();
+//        if(left){
+//            x-=moveSpeed;
+//            moveSpeed+=0.2;
+//            left = false;
+//            reset();
+//        }
         if(left) {
             dx -= moveSpeed;
             if (dx < -maxSpeed) {
@@ -122,18 +128,18 @@ public class Heroy {
             else {
                 dy = 0;
             }
-
-            //Check Collision
+//
+//            //Check Collision
         int curCol = tileMap.getColTile((int)x);
         int curRow = tileMap.getRowTile((int)y);
-
+//
         double tOX = x + dx;
         double tOY = y + dy;
-
+//
         double tenpX = x;
         double tempY = y;
-
-        calculateCorner(x, tOY);
+//
+//        calculateCorner(x, tOY);
         if(dy < 0){
             if(topLeft || topRigth){
                 dy = 0;
@@ -189,6 +195,13 @@ public class Heroy {
         topRigth = tileMap.getTile(topTile,rigthTile) == 0;
         bottomLeft = tileMap.getTile(bottomTile,lefTile) == 0;
         bottomRigth = tileMap.getTile(bottomTile,rigthTile) == 0;
+    }
+
+    public void reset(){
+        moveSpeed = 0.6;
+        stopSpeed = 0.30;
+        jumpingStart = -11.0;
+        gravity = 0.64;
     }
 
 
