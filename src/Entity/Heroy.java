@@ -3,6 +3,7 @@ package Entity;
 import Input.KeyInput;
 import Main.Board;
 import TileMap.TileMap;
+import Utils.TextureAtlas;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -37,12 +38,19 @@ public class Heroy {
     private double gravity;
 
     private TileMap tileMap;
+    private TextureAtlas atlas;
 
     public Heroy(TileMap tileMap){
         this.tileMap = tileMap;
 
-        width = 20;
-        height = 20;
+        init();
+
+    }
+
+    public void init(){
+        atlas = new TextureAtlas("images/img_entity/playerSprite.png");
+        width = 30;
+        height = 30;
 
         moveSpeed = 0.6;
         maxSpeed = 4.2;
@@ -82,106 +90,106 @@ public class Heroy {
 
     public void tick(){
         handleInput();
-//        if(left){
-//            x-=moveSpeed;
-//            moveSpeed+=0.2;
-//            left = false;
-//            reset();
+        if(left){
+            x-=moveSpeed;
+        }
+        if(right){
+            x+=moveSpeed;
+        }
+//        if(left) {
+//            dx -= moveSpeed;
+//            if (dx < -maxSpeed) {
+//                dx = -maxSpeed;
+//            }
+//        }else if(right){
+//            dx+=moveSpeed;
+//            if(dx > maxSpeed){
+//                dx =  maxSpeed;
+//            }
 //        }
-        if(left) {
-            dx -= moveSpeed;
-            if (dx < -maxSpeed) {
-                dx = -maxSpeed;
-            }
-        }else if(right){
-            dx+=moveSpeed;
-            if(dx > maxSpeed){
-                dx =  maxSpeed;
-            }
-        }
-        else {
-            if(dx > 0){
-                dx -= stopSpeed;
-                if (dx < 0) {
-                    dx = 0;
-                }
-            } else if (dx < 0) {
-                    dx += stopSpeed;
-                    if (dx > 0) {
-                        dx = 0;
-                    }
-                }
-            }
-
-            if(jumping){
-                dy = jumpingStart;
-                falling = true;
-                jumping = false;
-            }
-
-            if(falling){
-                dy += gravity;
-                if(dy > maxFallingSpeed){
-                    dy = maxFallingSpeed;
-                }
-            }
-            else {
-                dy = 0;
-            }
+//        else {
+//            if(dx > 0){
+//                dx -= stopSpeed;
+//                if (dx < 0) {
+//                    dx = 0;
+//                }
+//            } else if (dx < 0) {
+//                    dx += stopSpeed;
+//                    if (dx > 0) {
+//                        dx = 0;
+//                    }
+//                }
+//            }
 //
-//            //Check Collision
-        int curCol = tileMap.getColTile((int)x);
-        int curRow = tileMap.getRowTile((int)y);
+//            if(jumping){
+//                dy = jumpingStart;
+//                falling = true;
+//                jumping = false;
+//            }
 //
-        double tOX = x + dx;
-        double tOY = y + dy;
-//
-        double tenpX = x;
-        double tempY = y;
-//
-//        calculateCorner(x, tOY);
-        if(dy < 0){
-            if(topLeft || topRigth){
-                dy = 0;
-                tempY = curRow * tileMap.getTileSize() + height /2;
-            }else {
-                tempY += dy;
-            }
-        }
-        if(dy > 0){
-            if(bottomLeft || bottomRigth){
-                dy = 0;
-                falling = false;
-                tempY = (curRow + 1) * tileMap.getTileSize() - height /2;
-            }else{
-                tempY +=dy;
-            }
-        }
-        calculateCorner(tOX, y);
-        if(dx < 0){
-            if(topLeft || bottomLeft){
-                dx = 0;
-                tenpX = curCol * tileMap.getTileSize() + width /2;
-            }else {
-                tenpX +=dx;
-            }
-        }
-        if (dx > 0){
-            if(topRigth || bottomRigth){
-                dx = 0;
-                tenpX = (curCol +1) * tileMap.getTileSize() - width /2;
-            }else{
-                tenpX += dx;
-            }
-        }
-        if(!falling){
-            calculateCorner(x, y + 1);
-            if(!bottomLeft && !bottomRigth){
-                falling = true;
-            }
-        }
-        x = tenpX;
-        y = tempY;
+//            if(falling){
+//                dy += gravity;
+//                if(dy > maxFallingSpeed){
+//                    dy = maxFallingSpeed;
+//                }
+//            }
+//            else {
+//                dy = 0;
+//            }
+////
+////            //Check Collision
+//        int curCol = tileMap.getColTile((int)x);
+//        int curRow = tileMap.getRowTile((int)y);
+////
+//        double tOX = x + dx;
+//        double tOY = y + dy;
+////
+//        double tenpX = x;
+//        double tempY = y;
+////
+////        calculateCorner(x, tOY);
+//        if(dy < 0){
+//            if(topLeft || topRigth){
+//                dy = 0;
+//                tempY = curRow * tileMap.getTileSize() + height /2;
+//            }else {
+//                tempY += dy;
+//            }
+//        }
+//        if(dy > 0){
+//            if(bottomLeft || bottomRigth){
+//                dy = 0;
+//                falling = false;
+//                tempY = (curRow + 1) * tileMap.getTileSize() - height /2;
+//            }else{
+//                tempY +=dy;
+//            }
+//        }
+//        calculateCorner(tOX, y);
+//        if(dx < 0){
+//            if(topLeft || bottomLeft){
+//                dx = 0;
+//                tenpX = curCol * tileMap.getTileSize() + width /2;
+//            }else {
+//                tenpX +=dx;
+//            }
+//        }
+//        if (dx > 0){
+//            if(topRigth || bottomRigth){
+//                dx = 0;
+//                tenpX = (curCol +1) * tileMap.getTileSize() - width /2;
+//            }else{
+//                tenpX += dx;
+//            }
+//        }
+//        if(!falling){
+//            calculateCorner(x, y + 1);
+//            if(!bottomLeft && !bottomRigth){
+//                falling = true;
+//            }
+//        }
+//        x = tenpX;
+//        y = tempY;
         tileMap.setX((int)(Board.WIDTH /2 - x));
         tileMap.setY((int)(Board.HEIGTH /2 - y));
     }
@@ -217,7 +225,8 @@ public class Heroy {
         int ty = tileMap.getY();
 
         g.setColor(Color.red);
-        g.fillRect((int)(tx + x - width /2),(int)(ty + y -width /2),width,height);
+        g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
+        //g.fillRect((int)(tx + x - width /2),(int)(ty + y -width /2),width,height);
 
     }
 }

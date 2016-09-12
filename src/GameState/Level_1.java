@@ -40,7 +40,7 @@ public class Level_1 extends GameState {
 
         heroy.setX(150);
         heroy.setY(50);
-        bg = Loader.loadImage("res/bg.gif");
+        bg = Loader.loadImage("bg.gif");
 
     }
 
@@ -61,6 +61,7 @@ public class Level_1 extends GameState {
 
         if(KeyInput.keys[KeyEvent.VK_LEFT]) heroy.setLeft(true);
         if(KeyInput.keys[KeyEvent.VK_RIGHT]) heroy.setRight(true);
+
     }
 
     @Override

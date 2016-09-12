@@ -42,7 +42,7 @@ public class MenuState extends GameState {
         fontTextTitle = new Font("Arial",Font.BOLD,56);
         fontTextMenu = new Font("Arial",Font.PLAIN,20);
         title = "M A Z E";
-        image = Loader.loadImage("res/images/img_menu/doble.png");
+        image = Loader.loadImage("images/img_menu/doble.png");
 
 
     }

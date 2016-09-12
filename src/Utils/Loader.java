@@ -10,10 +10,12 @@ import java.io.IOException;
  */
 public class Loader {
 
+    public static final  String PATH_FOLDER = "res/";
+
     public static BufferedImage loadImage(String path){
         BufferedImage img = null;
         try{
-            img = ImageIO.read(new File(path));
+            img = ImageIO.read(new File(PATH_FOLDER + path));
         }catch (IOException e){
             e.printStackTrace();
         }
