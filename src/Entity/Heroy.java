@@ -2,6 +2,8 @@ package Entity;
 
 import Input.KeyInput;
 import Main.Board;
+import Sprite.Sprite;
+import Sprite.SpriteSheet;
 import TileMap.TileMap;
 import Utils.TextureAtlas;
 
@@ -39,6 +41,8 @@ public class Heroy {
 
     private TileMap tileMap;
     private TextureAtlas atlas;
+    private SpriteSheet sheet;
+    private Sprite sprite;
 
     public Heroy(TileMap tileMap){
         this.tileMap = tileMap;
@@ -48,7 +52,9 @@ public class Heroy {
     }
 
     public void init(){
-        atlas = new TextureAtlas("images/img_entity/playerSprite.png");
+        atlas = new TextureAtlas("images/playerSprite.png");
+        sheet = new SpriteSheet(atlas.cut(1 * 15, 1 * 15, 2 * 15 , 15),2,15);
+        sprite = new Sprite(sheet,1);
         width = 30;
         height = 30;
 
@@ -223,9 +229,10 @@ public class Heroy {
 
         int tx = tileMap.getX();
         int ty = tileMap.getY();
+        sprite.render(g,125,125);
 
-        g.setColor(Color.red);
-        g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
+       // g.setColor(Color.red);
+       // g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
         //g.fillRect((int)(tx + x - width /2),(int)(ty + y -width /2),width,height);
 
     }

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Created by Denis on 14.09.2016.
+ * Класс, предназначенный для вырезания более мелького изображения из более крупного.
  */
 public class SpriteSheet {
 
