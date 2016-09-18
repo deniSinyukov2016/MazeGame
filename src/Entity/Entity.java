@@ -7,15 +7,19 @@ import java.awt.*;
  */
 public abstract class Entity {
 
-//    private int x = 10;
-//    private int y = 10;
-//    private int width = 25 ;
-//    private int heigth = 5;
+   // Расположениие сущности
+    private float x ;
+    private float y ;
 
-//    public Entity(int width, int heigth){
-//        this.width = width;
-//        this.heigth = heigth;
-//    }
+    //Тип
+    public  final EntityType entityType;
+
+    public Entity(EntityType entityType, float x, float y){
+        this.entityType = entityType;
+        this.x = x;
+        this.y = y;
+
+    }
 
     public abstract void init();
     public abstract void render(Graphics g);

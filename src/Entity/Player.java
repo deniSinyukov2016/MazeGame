@@ -22,7 +22,8 @@ public class Player extends Entity {
 
 
 
-    public Player( ) {
+    public Player( int x, int y) {
+        super(EntityType.Player,x,y);
         init();
     }
 

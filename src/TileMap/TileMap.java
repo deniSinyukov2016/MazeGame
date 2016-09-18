@@ -2,6 +2,7 @@ package TileMap;
 
 import Entity.Player;
 import Main.Board;
+import Sprite.SpriteSheet;
 import Utils.Loader;
 
 import javax.imageio.ImageIO;
@@ -22,17 +23,20 @@ public class TileMap {
     private int[][] map ;
     private int mapWidth;
     private int mapHeight;
+    private SpriteSheet sheet;
 
     private static final String URL_MAP = "res/Maps/mapLevel.txt";
 
     public TileMap(int tileSize) {
         this.tileSize = tileSize;
+        sheet = new SpriteSheet(Loader.loadImage("images/playerSprite.png"),3,32);
         loadMap(URL_MAP);
 
 
     }
 
 
+    //Загрузка карты из файла
     public void loadMap(String s) {
 
         try  (BufferedReader br = new BufferedReader(new FileReader(s))){
@@ -48,27 +52,21 @@ public class TileMap {
                 String line = br.readLine();
                 String[] tokens = line.split(delimiters);
                 for (int col = 0; col < mapWidth; col++) {
-
                     map[row][col] = Integer.parseInt(tokens[col]);
                 }
-
             }
-
-
         } catch (Exception e) {
-
             e.printStackTrace();
         }
-
-
-
     }
 
+    //Обновление
     public void tick(){
 
     }
 
 
+    //Отрисовка
     public void render(Graphics g) {
 
         for (int row = 0; row < mapHeight; row++) {
@@ -76,7 +74,7 @@ public class TileMap {
 
                 int rc = map[row][col];
                 if(rc == 0){
-                    g.setColor(Color.BLUE);
+                    g.drawImage(sheet.getSprite(1),map[row][col],map[row][col],null);
                 }else if(rc == 1){
                     g.setColor(Color.BLACK);
                 }

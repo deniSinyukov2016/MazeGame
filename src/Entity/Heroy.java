@@ -229,7 +229,7 @@ public class Heroy {
 
         int tx = tileMap.getX();
         int ty = tileMap.getY();
-        sprite.render(g,125,125);
+       g.drawImage(sheet.getSprite(0,))
 
        // g.setColor(Color.red);
        // g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
