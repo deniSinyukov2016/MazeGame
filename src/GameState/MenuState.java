@@ -36,7 +36,7 @@ public class MenuState extends GameState {
     public void init() {
 
         states = new ArrayList<GameState>();
-        states.add(new Level_1(gsm));
+        //states.add(new Level_1(gsm));
         states.add(new Level2(gsm));
         currentSelection = 0;
         fontTextTitle = new Font("Arial",Font.BOLD,56);

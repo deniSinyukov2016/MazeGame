@@ -200,16 +200,7 @@ public class Heroy {
         tileMap.setY((int)(Board.HEIGTH /2 - y));
     }
 
-    private void calculateCorner(double x, double y) {
-    int lefTile = tileMap.getColTile((int)(x - width / 2));
-    int rigthTile = tileMap.getColTile((int)(x + width / 2));
-    int topTile = tileMap.getColTile((int)(y - height / 2));
-    int bottomTile = tileMap.getColTile((int)(y + height / 2));
-        topLeft = tileMap.getTile(topTile,lefTile) == 0;
-        topRigth = tileMap.getTile(topTile,rigthTile) == 0;
-        bottomLeft = tileMap.getTile(bottomTile,lefTile) == 0;
-        bottomRigth = tileMap.getTile(bottomTile,rigthTile) == 0;
-    }
+
 
     public void reset(){
         moveSpeed = 0.6;
@@ -229,7 +220,7 @@ public class Heroy {
 
         int tx = tileMap.getX();
         int ty = tileMap.getY();
-       g.drawImage(sheet.getSprite(0,))
+      // g.drawImage(sheet.getSprite(0,))
 
        // g.setColor(Color.red);
        // g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);

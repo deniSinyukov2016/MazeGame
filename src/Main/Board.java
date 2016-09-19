@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 public class Board extends JPanel implements Runnable {
 
     public static final int WIDTH = 640;//ширина
-    public static final int HEIGTH = 520;//высота
+    public static final int HEIGTH = 544;//высота
     private Color colorBackground ;//цвет фона
 
     private long start,elepsed,wait;
