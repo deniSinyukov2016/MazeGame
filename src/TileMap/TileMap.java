@@ -1,116 +1,71 @@
 package TileMap;
 
-import Entity.Player;
 import Main.Board;
-import Sprite.SpriteSheet;
 import Utils.Loader;
+import Utils.TextureAtlas;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Denis on 04.09.2016.
  */
 public class TileMap {
 
-    private int x;
-    private int y;
-    private int tileSize;
-    private int[][] map ;
-    private int mapWidth;
-    private int mapHeight;
-    private SpriteSheet sheet;
+    //размер тайла
+    public static final  int TILE_SCALE = 32;
 
-    private static final String URL_MAP = "res/Maps/mapLevel.txt";
-
-    public TileMap(int tileSize) {
-        this.tileSize = tileSize;
-        sheet = new SpriteSheet(Loader.loadImage("images/playerSprite.png"),3,32);
-        loadMap(URL_MAP);
+    //Оригинальный размер тайла
+    public static final int TILE_IN_GAME_SCALE = 1;
 
 
+    public static final int SCALED_GAME_SIZE = TILE_SCALE * TILE_IN_GAME_SCALE;
+
+    // количество тайлов в ширину
+    public static final int TILE_IN_WIDTH = Board.WIDTH / SCALED_GAME_SIZE;
+
+    //количество тайлов в высоту
+    public static final int TILE_IN_HEIGHT = Board.HEIGTH / SCALED_GAME_SIZE;
+
+    //карта
+    private Integer [][]map;
+
+    private Map<TileType,Tile> tiles ;
+    private TextureAtlas atlas;
+
+    public TileMap(){
+        init();
+    }
+
+    private void init(){
+        tiles = new HashMap<TileType,Tile>();
+        atlas = new TextureAtlas("images/tile_level.png");
+
+        //Виды тайлов
+        tiles.put(TileType.LAND,new Tile(atlas.cut(0,0,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.LAND));
+        tiles.put(TileType.STONE,new Tile(atlas.cut(0,32,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.STONE));
+        tiles.put(TileType.EMPTY,new Tile(atlas.cut(128,96,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.EMPTY));
+
+        map = Loader.loadLevev("Maps/mapLevel.txt");
     }
 
 
-    //Загрузка карты из файла
-    public void loadMap(String s) {
-
-        try  (BufferedReader br = new BufferedReader(new FileReader(s))){
-
-//            FileInputStream fstream = new FileInputStream(s);//читает из файла
-//            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-            mapWidth = Integer.parseInt(br.readLine());
-            mapHeight = Integer.parseInt(br.readLine());
-            map = new int[mapHeight][mapWidth];
-            String delimiters = "\\s+";;//разделители
-
-            for (int row = 0; row < mapHeight; row++) {
-                String line = br.readLine();
-                String[] tokens = line.split(delimiters);
-                for (int col = 0; col < mapWidth; col++) {
-                    map[row][col] = Integer.parseInt(tokens[col]);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Обновление
-    public void tick(){
-
-    }
-
-
-    //Отрисовка
     public void render(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,Board.WIDTH,Board.HEIGTH);
 
-        for (int row = 0; row < mapHeight; row++) {
-            for (int col = 0; col < mapWidth; col++) {
-
-                int rc = map[row][col];
-                if(rc == 0){
-                    g.drawImage(sheet.getSprite(1),map[row][col],map[row][col],null);
-                }else if(rc == 1){
-                    g.setColor(Color.BLACK);
-                }
-                g.fillRect(x+ row * tileSize, y+col  * tileSize,tileSize,tileSize);
+        for (int i = 0; i <map.length ; i++) {
+            for (int j = 0; j <map[i].length ; j++) {
+                tiles.get(TileType.getNumFromTipe(map[i][j])).render(g,j * SCALED_GAME_SIZE,i * SCALED_GAME_SIZE);
             }
         }
     }
-
-    public  int getX(){
-        return x;
+    public int getTile(TileType tileType){
+        return tileType.getNumber();
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x){
-        this.x = x;
-    }
-    public void setY(int y){
-        this.y = y;
-    }
-
-    public int getColTile(int x){
-        return x / tileSize;
-    }
-
-    public  int getRowTile(int y){
-        return y / tileSize;
-    }
-
-    public int getTile(int row, int col){
-        return map[row][col];
-    }
-
-    public  int getTileSize(){
-        return tileSize;
+    public Integer getMap(int x , int y){
+        return map[x][y];
     }
 }

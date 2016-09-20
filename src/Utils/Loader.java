@@ -16,6 +16,9 @@ public class Loader {
 
     public static final String PATH_FOLDER = "res/";
 
+
+
+    //Зангрузка изображения
     public static BufferedImage loadImage(String path) {
         BufferedImage img = null;
         try {
@@ -25,7 +28,7 @@ public class Loader {
         }
         return img;
     }
-
+    //Загрузка карты
     public static Integer [][] loadLevev(String path){
 
         Integer [][] result = null;
@@ -47,6 +50,7 @@ public class Loader {
             return result;
         }
 
+        //Преобразование массива строк в массив чисел
         public static final Integer [] strToInt_array(String [] arr){
             Integer [] res = new Integer[arr.length];
             for (int i = 0; i <arr.length ; i++) {

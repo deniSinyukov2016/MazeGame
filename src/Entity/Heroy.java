@@ -6,9 +6,11 @@ import Sprite.Sprite;
 import Sprite.SpriteSheet;
 import TileMap.TileMap;
 import Utils.TextureAtlas;
+import Sprite.Animation;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by Denis on 09.09.2016.
@@ -23,28 +25,36 @@ public class Heroy {
     private int width;
     private int height;
 
+
+    private boolean up;
+    private boolean down;
     private boolean left;
     private boolean right;
-    private boolean jumping;
-    private boolean falling;
-    private  boolean topLeft;
-    private  boolean topRigth;
-    private  boolean bottomLeft;
-    private  boolean bottomRigth;
 
-    private double maxSpeed;
-    private double moveSpeed;
-    private double maxFallingSpeed;
-    private double stopSpeed;
-    private double jumpingStart;
-    private double gravity;
 
     private TileMap tileMap;
     private TextureAtlas atlas;
     private SpriteSheet sheet;
     private Sprite sprite;
 
+    //Рисунок движений по сторонам
+    private  SpriteSheet sheetUP;
+    private  SpriteSheet sheetDown;
+    private  SpriteSheet sheetLeft;
+    private  SpriteSheet sheetRight;
+
+    private Animation animation;
+
+    //ArraySprites move
+    private  BufferedImage [] upMove ;
+    private  BufferedImage [] downMove ;
+    private  BufferedImage [] leftMove ;
+    private  BufferedImage [] rightMove ;
+
+    private int curFrame = 0;
+
     public Heroy(TileMap tileMap){
+        this.atlas = atlas;
         this.tileMap = tileMap;
 
         init();
@@ -53,178 +63,104 @@ public class Heroy {
 
     public void init(){
         atlas = new TextureAtlas("images/playerSprite.png");
-        sheet = new SpriteSheet(atlas.cut(1 * 15, 1 * 15, 2 * 15 , 15),2,15);
-        sprite = new Sprite(sheet,1);
-        width = 30;
-        height = 30;
+        sheet = new SpriteSheet(atlas.cut(0, 0, 96 ,128),12,32);
+         sheetUP = new SpriteSheet(atlas.cut(0, 96, 96 ,32),3,32);
+         upMove = new BufferedImage[]{
+                 sheetUP.getSprite(0),
+                 sheetUP.getSprite(1),
+                 sheetUP.getSprite(2)};
 
-        moveSpeed = 0.6;
-        maxSpeed = 4.2;
-        maxFallingSpeed = 12;
-        stopSpeed = 0.30;
-        jumpingStart = -11.0;
-        gravity = 0.64;
-    }
+        sheetDown = new SpriteSheet(atlas.cut(0,0,96,32),3,32);
+        downMove = new BufferedImage[]{
+                sheetDown.getSprite(0),
+                sheetDown.getSprite(1),
+                sheetDown.getSprite(2)};
 
-    public  void setLeft(boolean b){
-        left = b;
+        sheetLeft = new SpriteSheet(atlas.cut(0,32,96,32),3,32);
+        leftMove = new BufferedImage[]{
+                sheetLeft.getSprite(0),
+                sheetLeft.getSprite(1),
+                sheetLeft.getSprite(2)};
+
+        sheetRight = new SpriteSheet(atlas.cut(0,64,96,32),3,32);
+        rightMove = new BufferedImage[]{
+                sheetRight.getSprite(0),
+                sheetRight.getSprite(1),
+                sheetRight.getSprite(2)};
+        animation = new Animation();
+
     }
-    public void  setRight(boolean b){
-        right = b;
-    }
-    public  void  setJumping(boolean b){
-        if(!falling){
-            jumping = true;
+    public void tick(){
+        handleInput();
+        if(left){
+            animation.setFrame(leftMove);
+            animation.setDelay(100);
         }
+        if(right){
+            animation.setFrame(rightMove);
+            animation.setDelay(100);
+        }
+        if(up){
+            animation.setFrame(upMove);
+            animation.setDelay(100);
+        }
+        if(down){
+            animation.setFrame(downMove);
+            animation.setDelay(100);
+        }
+        animation.tick();
 
     }
+
+    //Движение сущности
+    public void handleInput(){
+
+        if(KeyInput.keys[KeyEvent.VK_LEFT]) {
+            left = true;
+            x-=3;
+        }else left = false;
+        if(KeyInput.keys[KeyEvent.VK_RIGHT]) {
+            right = true;
+            x+=3;
+        }else right = false;
+        if(KeyInput.keys[KeyEvent.VK_UP]) {
+            up = true;
+            y-=3;
+        }else up = false;
+        if(KeyInput.keys[KeyEvent.VK_DOWN]) {
+            down = true;
+            y+=3;
+        }else down = false;
+
+
+
+    }
+
+
+    public  void render(Graphics g) {
+        g.drawImage(animation.getImage(),(int)x,(int)y,null);
+
+
+        //sprite.render(g,120,120);
+
+       // g.setColor(Color.red);
+       // g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
+        //g.fillRect((int)(tx + x - width /2),(int)(ty + y -width /2),width,height);
+
+    }
+
 
     public  double getX(){
         return  x;
     }
 
     public double getY(){
-     return y;
+        return y;
     }
     public  void setX(int x){
         this.x = x;
     }
     public  void setY(int y){
         this.y = y;
-    }
-
-
-    public void tick(){
-        handleInput();
-        if(left){
-            x-=moveSpeed;
-        }
-        if(right){
-            x+=moveSpeed;
-        }
-//        if(left) {
-//            dx -= moveSpeed;
-//            if (dx < -maxSpeed) {
-//                dx = -maxSpeed;
-//            }
-//        }else if(right){
-//            dx+=moveSpeed;
-//            if(dx > maxSpeed){
-//                dx =  maxSpeed;
-//            }
-//        }
-//        else {
-//            if(dx > 0){
-//                dx -= stopSpeed;
-//                if (dx < 0) {
-//                    dx = 0;
-//                }
-//            } else if (dx < 0) {
-//                    dx += stopSpeed;
-//                    if (dx > 0) {
-//                        dx = 0;
-//                    }
-//                }
-//            }
-//
-//            if(jumping){
-//                dy = jumpingStart;
-//                falling = true;
-//                jumping = false;
-//            }
-//
-//            if(falling){
-//                dy += gravity;
-//                if(dy > maxFallingSpeed){
-//                    dy = maxFallingSpeed;
-//                }
-//            }
-//            else {
-//                dy = 0;
-//            }
-////
-////            //Check Collision
-//        int curCol = tileMap.getColTile((int)x);
-//        int curRow = tileMap.getRowTile((int)y);
-////
-//        double tOX = x + dx;
-//        double tOY = y + dy;
-////
-//        double tenpX = x;
-//        double tempY = y;
-////
-////        calculateCorner(x, tOY);
-//        if(dy < 0){
-//            if(topLeft || topRigth){
-//                dy = 0;
-//                tempY = curRow * tileMap.getTileSize() + height /2;
-//            }else {
-//                tempY += dy;
-//            }
-//        }
-//        if(dy > 0){
-//            if(bottomLeft || bottomRigth){
-//                dy = 0;
-//                falling = false;
-//                tempY = (curRow + 1) * tileMap.getTileSize() - height /2;
-//            }else{
-//                tempY +=dy;
-//            }
-//        }
-//        calculateCorner(tOX, y);
-//        if(dx < 0){
-//            if(topLeft || bottomLeft){
-//                dx = 0;
-//                tenpX = curCol * tileMap.getTileSize() + width /2;
-//            }else {
-//                tenpX +=dx;
-//            }
-//        }
-//        if (dx > 0){
-//            if(topRigth || bottomRigth){
-//                dx = 0;
-//                tenpX = (curCol +1) * tileMap.getTileSize() - width /2;
-//            }else{
-//                tenpX += dx;
-//            }
-//        }
-//        if(!falling){
-//            calculateCorner(x, y + 1);
-//            if(!bottomLeft && !bottomRigth){
-//                falling = true;
-//            }
-//        }
-//        x = tenpX;
-//        y = tempY;
-        tileMap.setX((int)(Board.WIDTH /2 - x));
-        tileMap.setY((int)(Board.HEIGTH /2 - y));
-    }
-
-
-
-    public void reset(){
-        moveSpeed = 0.6;
-        stopSpeed = 0.30;
-        jumpingStart = -11.0;
-        gravity = 0.64;
-    }
-
-
-    //Движение сущности
-    public void handleInput(){
-
-    }
-
-
-    public  void render(Graphics g){
-
-        int tx = tileMap.getX();
-        int ty = tileMap.getY();
-      // g.drawImage(sheet.getSprite(0,))
-
-       // g.setColor(Color.red);
-       // g.drawImage(atlas.cut(0,0,32,32),(int)(tx + x - width /2),(int)(ty +y - width/2),width,height,null);
-        //g.fillRect((int)(tx + x - width /2),(int)(ty + y -width /2),width,height);
-
     }
 }

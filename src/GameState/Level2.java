@@ -1,7 +1,9 @@
 package GameState;
 
+import Entity.Heroy;
 import Main.Board;
 import TileMap.Tile;
+import TileMap.TileMap;
 import TileMap.TileType;
 import Utils.Loader;
 import Utils.TextureAtlas;
@@ -15,26 +17,11 @@ import java.util.Map;
  */
 public class Level2 extends GameState {
 
-    //размер тайла
-    public static final  int TILE_SCALE = 32;
+    //Player
+    private Heroy heroy;
 
-    //Оригинальный размер тайла
-    public static final int TILE_IN_GAME_SCALE = 1;
-
-
-    public static final int SCALED_GAME_SIZE = TILE_SCALE * TILE_IN_GAME_SCALE;
-
-    // количество тайлов в ширину
-    public static final int TILE_IN_WIDTH = Board.WIDTH / SCALED_GAME_SIZE;
-
-    //количество тайлов в высоту
-    public static final int TILE_IN_HEIGHT = Board.HEIGTH / SCALED_GAME_SIZE;
-
-    //карта
-    private Integer [][]map;
-
-    private Map<TileType,Tile> tiles ;
-    private TextureAtlas atlas;
+    //Map
+    private TileMap tileMap;
 
 
     public Level2(GameStateManager gsm) {
@@ -46,37 +33,30 @@ public class Level2 extends GameState {
 
     @Override
     public void init() {
+        tileMap = new TileMap();
 
-        map = new Integer[TILE_IN_WIDTH][TILE_IN_HEIGHT];
-        tiles = new HashMap<TileType,Tile>();
-        atlas = new TextureAtlas("images/tile_level.png");
-        tiles.put(TileType.LAND,new Tile(atlas.cut(0,0,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.LAND));
-        tiles.put(TileType.STONE,new Tile(atlas.cut(0,32,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.STONE));
-        tiles.put(TileType.EMPTY,new Tile(atlas.cut(128,96,TILE_SCALE,TILE_SCALE),TILE_IN_GAME_SCALE,TileType.EMPTY));
+        heroy = new Heroy(tileMap);
 
-        map = Loader.loadLevev("Maps/mapLevel.txt");
+        //начальные координаты Player
+        heroy.setX(100);
+        heroy.setY(123);
 
     }
 
     @Override
     public void tick() {
+        heroy.tick();
 
     }
 
     @Override
     public void handleInput() {
-
     }
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,Board.WIDTH,Board.HEIGTH);
 
-        for (int i = 0; i <map.length ; i++) {
-            for (int j = 0; j <map[i].length ; j++) {
-                tiles.get(TileType.getNumFromTipe(map[i][j])).render(g,i * SCALED_GAME_SIZE,j * SCALED_GAME_SIZE);
-            }
-        }
+        tileMap.render(g);
+        heroy.render(g);
     }
 }
