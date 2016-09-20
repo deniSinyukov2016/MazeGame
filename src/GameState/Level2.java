@@ -51,6 +51,7 @@ public class Level2 extends GameState {
 
     @Override
     public void handleInput() {
+        heroy.handleInput();
     }
 
     @Override

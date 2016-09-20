@@ -121,7 +121,7 @@ public class Heroy {
         }else left = false;
         if(KeyInput.keys[KeyEvent.VK_RIGHT]) {
             right = true;
-            x+=3;
+            x+=5;
         }else right = false;
         if(KeyInput.keys[KeyEvent.VK_UP]) {
             up = true;

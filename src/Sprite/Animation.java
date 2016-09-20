@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
  */
 public class Animation {
 
-    private BufferedImage [] frame;
+    private BufferedImage [] frame = new BufferedImage[3];
     private int currentFrame;
 
     private long startTime;
