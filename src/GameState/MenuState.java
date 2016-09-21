@@ -21,9 +21,6 @@ public class MenuState extends GameState {
     private int currentSelection ;//текущий выбранный
     private BufferedImage image = null;
     private  GameStateManager gsm ;
-    private ArrayList<GameState> states;
-
-    //private Level_1 level_1;
 
     public MenuState(GameStateManager gsm){
         super(gsm);
@@ -34,10 +31,6 @@ public class MenuState extends GameState {
     }
     @Override
     public void init() {
-
-        states = new ArrayList<GameState>();
-        //states.add(new Level_1(gsm));
-        states.add(new Level2(gsm));
         currentSelection = 0;
         fontTextTitle = new Font("Arial",Font.BOLD,56);
         fontTextMenu = new Font("Arial",Font.PLAIN,20);
@@ -54,32 +47,30 @@ public class MenuState extends GameState {
 
     @Override
     public void handleInput() {
-        if(KeyInput.keys[KeyEvent.VK_UP]){
+        if(KeyInput.keys[KeyEvent.VK_UP] && currentSelection > 0){
             currentSelection--;
-            if(currentSelection< 0)currentSelection = menuName.length-1;
         }
-        if(KeyInput.keys[KeyEvent.VK_DOWN]){
+        if(KeyInput.keys[KeyEvent.VK_DOWN] && currentSelection < menuName.length - 1){
             currentSelection++;
-            if(currentSelection == menuName.length)currentSelection = 0;
         }
         if(KeyInput.keys[KeyEvent.VK_ENTER]){
-//            if(currentSelection == 0){
-//               gsm.setGameStates(states.get(currentSelection));
-//
-//            }else if(currentSelection == 1){System.exit(0);}
-//            else if(currentSelection == 2){
-//                gsm.setGameStates(states.get(currentSelection));
-//            }
-            if(currentSelection <=0)
-            gsm.setGameStates(states.get(currentSelection));
-            else System.exit(0);
+
+            //Определение выбора
+            selectMenu();
         }
+    }
 
-
+    // Выбор текущего
+    public void selectMenu(){
+        if(currentSelection == 0 ){
+            gsm.setState(GameStateManager.PLAY_STATE);
+        }else if(currentSelection == 1){
+            System.exit(0);
+        }
     }
 
 
-
+    //Отрисока
     @Override
     public void render(Graphics g) {
         g.setColor(Color.BLACK);
